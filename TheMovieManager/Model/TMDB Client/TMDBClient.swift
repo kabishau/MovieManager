@@ -22,7 +22,7 @@ class TMDBClient {
             case .getWatchlist:
                 return Endpoints.base + "/account/\(Auth.accountId)/watchlist/movies" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
             case .getTokenRequest:
-                return Endpoints.base + "authentication/token/new" + Endpoints.apiKeyParam
+                return Endpoints.base + "/authentication/token/new" + Endpoints.apiKeyParam
             }
         }
         
@@ -57,13 +57,8 @@ class TMDBClient {
             let decoder = JSONDecoder()
             do {
                 let responseObject = try decoder.decode(RequestTokenResponse.self, from: data)
-                if responseObject.success == true {
-                    if responseObject.requestToken != "" {
-                        Auth.requestToken = responseObject.requestToken
-                    }
-                }
-                print(responseObject)
-                completion(responseObject.success, nil)
+                Auth.requestToken = responseObject.requestToken
+                completion(true, nil)
             } catch {
                 completion(false, error)
             }
