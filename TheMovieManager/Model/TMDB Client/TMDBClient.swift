@@ -15,10 +15,14 @@ class TMDBClient {
         static let apiKeyParam = "?api_key=\(TMDBClient.apiKey)"
         
         case getWatchlist
+        case getTokenRequest
         
         var stringValue: String {
             switch self {
-            case .getWatchlist: return Endpoints.base + "/account/\(Auth.accountId)/watchlist/movies" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
+            case .getWatchlist:
+                return Endpoints.base + "/account/\(Auth.accountId)/watchlist/movies" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
+            case .getTokenRequest:
+                return Endpoints.base + "authentication/token/new" + Endpoints.apiKeyParam
             }
         }
         
