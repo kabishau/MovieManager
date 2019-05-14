@@ -48,4 +48,26 @@ class TMDBClient {
         task.resume()
     }
     
+    class func getRequestToken(completion: @escaping (Bool, Error?) -> Void) {
+        let task = URLSession.shared.dataTask(with: Endpoints.getTokenRequest.url) { (data, response, error) in
+            guard let data = data else {
+                completion(false, error)
+                return
+            }
+            let decoder = JSONDecoder()
+            do {
+                let responseObject = try decoder.decode(RequestTokenResponse.self, from: data)
+                if responseObject.success == true {
+                    if responseObject.requestToken != "" {
+                        Auth.requestToken = responseObject.requestToken
+                    }
+                }
+                print(responseObject)
+                completion(responseObject.success, nil)
+            } catch {
+                completion(false, error)
+            }
+        }
+        task.resume()
+    }
 }
