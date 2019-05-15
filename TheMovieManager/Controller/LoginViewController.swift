@@ -42,8 +42,10 @@ class LoginViewController: UIViewController {
     
     func handleSessionResponse(success: Bool, error: Error?) {
         print(TMDBClient.Auth.sessionId)
-        DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "completeLogin", sender: nil)
+        if success {
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "completeLogin", sender: nil)
+            }
         }
     }
 }
