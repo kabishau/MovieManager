@@ -16,6 +16,7 @@ class TMDBClient {
         
         case getWatchlist
         case getTokenRequest
+        case login
         
         var stringValue: String {
             switch self {
@@ -23,6 +24,8 @@ class TMDBClient {
                 return Endpoints.base + "/account/\(Auth.accountId)/watchlist/movies" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
             case .getTokenRequest:
                 return Endpoints.base + "/authentication/token/new" + Endpoints.apiKeyParam
+            case .login:
+                return Endpoints.base + "/authentication/token/validate_with_login" + Endpoints.apiKeyParam
             }
         }
         
@@ -60,6 +63,33 @@ class TMDBClient {
                 Auth.requestToken = responseObject.requestToken
                 completion(true, nil)
             } catch {
+                completion(false, error)
+            }
+        }
+        task.resume()
+    }
+    
+    class func login(username: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
+        var request = URLRequest(url: Endpoints.login.url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let body = LoginRequest(username: username, password: password, requestToken: Auth.requestToken)
+        let encoder = JSONEncoder()
+        request.httpBody = try! encoder.encode(body)
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard let data = data else {
+                completion(false, error)
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            do {
+                let responseObject = try decoder.decode(RequestTokenResponse.self, from: data)
+                Auth.requestToken = responseObject.requestToken
+                completion(true, nil)
+            } catch {
+                print(error)
                 completion(false, error)
             }
         }
