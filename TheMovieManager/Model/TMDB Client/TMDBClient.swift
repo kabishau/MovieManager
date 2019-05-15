@@ -99,7 +99,7 @@ class TMDBClient {
         task.resume()
     }
     
-    class func getSessionId(completion: @escaping (Bool, Error?) -> Void) {
+    class func createSessionId(completion: @escaping (Bool, Error?) -> Void) {
         
         var request = URLRequest(url: Endpoints.sessionId.url)
         request.httpMethod = "POST"
