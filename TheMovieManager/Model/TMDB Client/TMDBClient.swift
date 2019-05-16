@@ -19,6 +19,7 @@ class TMDBClient {
         case login
         case sessionId
         case webAuth
+        case logout
         
         var stringValue: String {
             switch self {
@@ -32,6 +33,8 @@ class TMDBClient {
                 return Endpoints.base + "/authentication/session/new" + Endpoints.apiKeyParam
             case .webAuth:
                 return "https://www.themoviedb.org/authenticate/" + Auth.requestToken + "?redirect_to=themoviemanager:authenticate" // themoviemanager - protocol, authenticate - path
+            case .logout:
+                return Endpoints.base + "/authentication/session" + Endpoints.apiKeyParam
             }
         }
         
