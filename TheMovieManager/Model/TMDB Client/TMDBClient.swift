@@ -80,7 +80,6 @@ class TMDBClient {
                 completion(false, error)
             }
         }
-        task.resume()
     }
     
     class func login(username: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
