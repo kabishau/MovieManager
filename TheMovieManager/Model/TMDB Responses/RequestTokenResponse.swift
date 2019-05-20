@@ -11,9 +11,5 @@ struct RequestTokenResponse: Codable {
         case expiresAt = "expires_at"
         case requestToken = "request_token"
     }
-
-    //"success": true,
-    //"expires_at": "2019-05-14 04:12:52 UTC",
-    //"request_token": "eacad2d87559b90950fd646982f44c9e522ee40e"
 }
 
